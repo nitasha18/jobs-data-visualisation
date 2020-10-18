@@ -1,18 +1,19 @@
 from selenium import webdriver
 import pandas as pd
 from bs4 import BeautifulSoup
+from webdriver_manager.chrome import ChromeDriverManager
 
 #setup chromedriver
-driver = webdriver.Chrome("./chromedriver")
+driver = webdriver.Chrome(ChromeDriverManager().install())
 options = webdriver.ChromeOptions()
 options.add_argument("start-maximized");
 options.add_argument("disable-infobars")
 options.add_argument("--disable-extensions")
 df = pd.DataFrame(columns=["Title","Location","Company","Salary","Sponsored","Description"])
-for i in range(0,50):
+for i in range(0,45):
 
 	#step 1: get the page
-	driver.get("https://www.indeed.co.in/jobs?q=data+science&l=India&start="+str(i))
+	driver.get("https://www.indeed.co.in/jobs?q=ui+ux+designer&l=India&start="+str(i))
 	driver.implicitly_wait(4)
 
 	all_jobs = driver.find_elements_by_class_name('result')
@@ -61,5 +62,5 @@ for i in range(0,50):
 			'Description':job_desc
 			},ignore_index=True)
 		print(df.shape," results received")	
-df.to_csv("./data/indeed-data-analyst-india.csv",index = False)
+df.to_csv("./data/indeed-ui-ux-designer-india.csv",index = False)
 
